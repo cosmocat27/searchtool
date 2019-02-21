@@ -2,7 +2,9 @@
 """
 Created on Mon Jan  7 14:00:52 2019
 
-@author: sem319
+@author: Cosmo Zen
+
+Functions for handling document insert and delete
 """
 
 from flask import (
@@ -15,7 +17,10 @@ from datetime import datetime
 from searchapp.auth import login_required
 from searchapp.db import get_db
 
+from searchapp.word_to_elastic import word_to_elastic, delete_from_index
+
 import os
+import sys
 
 bp = Blueprint('blog', __name__)
 
@@ -24,7 +29,7 @@ bp = Blueprint('blog', __name__)
 def index():
     db = get_db()
     entries = db.execute(
-            	'select title, body'
+            	'select id, title, body'
             	' FROM entries order by id'
     ).fetchall()
     return render_template('blog/index.html', entries=entries)
@@ -43,64 +48,31 @@ def create():
             db = get_db()
             db.execute('insert into entries(title, body, author_id) values(?, ?, ?)',
 						[filename, filename, g.user['id']])
+            docID = db.execute('select max(id) from entries where title=?', [filename]).fetchone()['max(id)']
             db.commit()
+
+            #print(docID, file=sys.stderr)
+            word_to_elastic(fullpath, docID)
+            os.remove(fullpath)
+
             flash('New entry was successfully posted')
         
         else:
-            flask('Could not post file, only .docx allowed')
+            flash('Could not post file, only .docx allowed')
         
         return redirect(url_for('blog.index'))
     
     return render_template('blog/create.html')
 
-def get_post(id, check_author=True):
-    post = get_db().execute(
-        'SELECT p.id, title, body, created, author_id, username'
-        ' FROM post p JOIN user u ON p.author_id = u.id'
-        ' WHERE p.id = ?',
-        (id,)
-    ).fetchone()
-    
-    if post is None:
-        abort(404, "Post id {0} doesn't exist.".format(id))
-    
-    if check_author and post['author_id'] != g.user['id']:
-        abort(403)
-    
-    return post
-
-@bp.route('/<int:id>/update', methods=('GET', 'POST'))
-@login_required
-def update(id):
-    post = get_post(id)
-    
-    if request.method == 'POST':
-        title = request.form['title']
-        body = request.form['body']
-        error = None
-        
-        if not title:
-            error = 'Title is required.'
-        
-        if error is not None:
-            flash(error)
-        else:
-            db = get_db()
-            db.execute(
-                'UPDATE post SET title = ?, body = ?'
-                ' WHERE id = ?',
-                (title, body, id)
-            )
-            db.commit()
-            return redirect(url_for('blog.index'))
-    
-    return render_template('blog/update.html', post=post)
-
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required
 def delete(id):
-    get_post(id)
     db = get_db()
-    db.execute('DELETE FROM post WHERE id = ?', (id,))
+    db.execute('DELETE FROM entries WHERE id = ?', (id,))
     db.commit()
+
+    delete_from_index(id)
+
+    flash('Entry was successfully deleted')
+
     return redirect(url_for('blog.index'))

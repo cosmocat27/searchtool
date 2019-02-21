@@ -1,24 +1,88 @@
-<!doctype html>
-<title>{% block title %}{% endblock %} - Flaskr</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<nav>
-  <h1>Flaskr</h1>
-  <ul>
-    {% if g.user %}
-      <li><span>{{ g.user['username'] }}</span>
-      <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
-    {% else %}
-      <li><a href="{{ url_for('auth.register') }}">Register</a>
-      <li><a href="{{ url_for('auth.login') }}">Log In</a>
-    {% endif %}
-  </ul>
-</nav>
-<section class="content">
-  <header>
-    {% block header %}{% endblock %}
-  </header>
-  {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
-  {% block content %}{% endblock %}
-</section>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Search Prototype</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../static/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap and jQuery javascript -->
+    <script src="../static/jquery-2.2.4.js"></script>
+    <script src="../static/bootstrap.min.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="../static/jumbotron-narrow.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation">
+              <a href="http://localhost:5601" target="_blank">Kibana Search</a>
+            </li>
+            {% if g.user %}
+              <li role="presentation">
+                <a href="{{ url_for('blog.index') }}">{{ g.user['username'] }}</a>
+              </li>
+              <li role="presentation">
+                <a href="{{ url_for('auth.logout') }}">Log Out</a>
+              </li>
+            {% else %}
+            <li role="presentation">
+              <a href="{{ url_for('auth.register') }}">Register</a>
+            </li>
+            <li role="presentation">
+              <a href="{{ url_for('auth.login') }}">Log In</a>
+            </li>
+            {% endif %}
+          </ul>
+        </nav>
+        <a href="{{ url_for('blog.index') }}"><h3 class="text-muted">Search Prototype</h3></a>
+      </div>
+
+      <div class="jumbotron">
+        {% if not g.user %}
+          <h2>Welcome to Search Prototype!<br>
+            Please <a href="{{ url_for('auth.register') }}">register</a>
+            or <a href="{{ url_for('auth.login') }}">login</a>
+          </h2>
+        {% endif %}
+        {% block header %}{% endblock %}
+      </div>
+
+      <div class="container">
+        {% for message in get_flashed_messages() %}
+          <div class="alert alert-success" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+
+        {% block content %}{% endblock %}
+      </div>
+
+      <footer class="footer">
+        <p>&copy; 2019 Cosmo Zen</p>
+      </footer>
+
+    </div> <!-- /container -->
+  </body>
+</html>

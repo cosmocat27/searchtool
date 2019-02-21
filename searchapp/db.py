@@ -2,7 +2,9 @@
 """
 Created on Mon Jan  7 10:52:10 2019
 
-@author: sem319
+@author: Cosmo Zen
+
+Functions for interacting with the database
 """
 
 import sqlite3

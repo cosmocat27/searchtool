@@ -1,25 +1,35 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Entries{% endblock %}</h1>
-  {% if g.user %}
-	<form action="{{ url_for('blog.create') }}" method=post class=add-entry enctype=multipart/form-data>
-		<dd><input type=file name=file>
-		<dd><input type=submit value=Upload>
-	</form>
-  {% endif %}
+    {% if g.user %}
+        <h2>Upload a File</h2>
+        <p>Choose a valid Word document to add to the search index</p>
+        <form action="{{ url_for('blog.create') }}" method=post class=add-entry enctype=multipart/form-data>
+            <input type=file name=file>
+            <input class="btn btn-lg btn-success" type=submit value=Upload>
+        </form>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
-	<ul class=entries>
-  	{% for entry in entries %}
-		<li><h2>{{ entry.title }}</h2>{{ entry.text|safe }}
-		{% if not loop.last %}
-			<hr>
-		{% endif %}
-	{% else %}
-		<li><em>Unbelievable. No entries here so far</em>
-	{% endfor %}
-	</ul>
-{% endblock %}	
+    <h1>{% block title %}Entries{% endblock %}</h1>
+    <hr>
+    <ul class=entries>
+    {% for entry in entries %}
+        <li>
+            <div class="col-8">
+                <h3>{{ entry.title }}</h3>{{ entry.text|safe }}
+                <form name="delete_entry" action="{{ url_for('blog.delete', id=entry.id) }}" method="post">
+                    <input class="btn btn-danger" type=submit value=Delete>
+                </form>
 
+            </div>
+        </li>
+        {% if not loop.last %}
+        <hr>
+        {% endif %}
+        {% else %}
+        <li><em>Unbelievable. No entries here so far</em>
+    {% endfor %}
+    </ul>
+{% endblock %}

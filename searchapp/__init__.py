@@ -2,7 +2,9 @@
 """
 Created on Mon Jan  7 10:49:59 2019
 
-@author: sem319
+@author: Cosmo Zen
+
+Script to initiate the app
 """
 
 import os

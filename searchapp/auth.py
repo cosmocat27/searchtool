@@ -2,7 +2,9 @@
 """
 Created on Mon Jan  7 10:57:18 2019
 
-@author: sem319
+@author: Cosmo Zen
+
+Functions for handling user authorization
 """
 
 import functools
