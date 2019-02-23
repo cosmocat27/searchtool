@@ -1,0 +1,4 @@
+include searchapp/schema.sql
+graft searchapp/static
+graft searchapp/templates
+global-exclude *.pyc
