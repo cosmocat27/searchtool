@@ -172,10 +172,10 @@ def unit_test():
 
     # perform a test search against the unit test index
     print('Test retrieval of unit posting')
-    os.system("curl -XGET 'http://localhost:9200/ut/_search?*' | python -m json.tool")
+    os.system("curl -XGET 'http://localhost:9200/ut/_search?*' | python3 -m json.tool")
 
     # remove the unit test index
-    print('Deleteing index')
+    print('Deleting index')
     el.delete_index(indexName)
 
     # list all indicies again, the unit test one should disappear
