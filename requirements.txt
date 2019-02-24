@@ -1,7 +1,7 @@
-python_docx==0.8.5
-setuptools==20.7.0
-elasticsearch==2.4.1
+elasticsearch==6.3.1
 Werkzeug==0.14.1
-click==6.6
 Flask==1.0.2
+click==6.6
+setuptools==20.7.0
+python_docx==0.8.5
 docx==0.2.4
