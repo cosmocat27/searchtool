@@ -44,7 +44,12 @@ body {
 /* Main marketing message and sign up button */
 .jumbotron {
   text-align: center;
+  background-image: url("images/landing.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   border-bottom: 1px solid #e5e5e5;
+  color: #FFF;
 }
 .jumbotron .btn {
   padding: 14px 24px;

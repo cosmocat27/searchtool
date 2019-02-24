@@ -18,8 +18,11 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.root_path, 'searchapp.db'),
-	UPLOAD_FOLDER=os.path.join(app.root_path, 'upload'),
+	    UPLOAD_FOLDER=os.path.join(app.root_path, 'upload'),
     )
+
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        os.makedirs(app.config['UPLOAD_FOLDER'])
 
     if test_config is None:
         # load the instance config, if it exists, when not testing

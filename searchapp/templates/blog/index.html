@@ -12,17 +12,22 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{% block title %}Entries{% endblock %}</h1>
+    <h1>{% block title %}Latest Entries{% endblock %}</h1>
     <hr>
     <ul class=entries>
-    {% for entry in entries %}
+    {% for entry in entries[::-1] %}
         <li>
-            <div class="col-8">
-                <h3>{{ entry.title }}</h3>{{ entry.text|safe }}
-                <form name="delete_entry" action="{{ url_for('blog.delete', id=entry.id) }}" method="post">
-                    <input class="btn btn-danger" type=submit value=Delete>
-                </form>
-
+            <div class="col-md-4">
+                <h4>{{ entry.title }}</h4>{{ entry.text|safe }}
+            </div>
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-4">
+                {% if g.user %}
+                    <form name="delete_entry" action="{{ url_for('blog.delete', id=entry.id) }}" method="post">
+                        <input class="btn btn-danger" type=submit value=Delete>
+                    </form>
+                {% endif %}
             </div>
         </li>
         {% if not loop.last %}

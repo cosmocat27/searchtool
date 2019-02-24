@@ -42,6 +42,7 @@ def create():
         
         if f and f.filename.rsplit('.', 1)[1] == 'docx':
             filename = secure_filename(f.filename)
+
             fullpath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
             f.save(fullpath)
             
