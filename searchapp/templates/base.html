@@ -31,12 +31,16 @@
 
     <div class="container">
       <div class="header clearfix">
+        <div class="col-md-4">
+            <a href="{{ url_for('blog.index') }}"><h3 class="text-muted">Search Prototype</h3></a>
+        </div>
+        <div class="col-md-8">
         <nav>
           <ul class="nav nav-pills pull-right">
+            {% if g.user %}
             <li role="presentation">
               <a href="/search" target="_blank">Kibana Search</a>
             </li>
-            {% if g.user %}
               <li role="presentation">
                 <a href="{{ url_for('blog.index') }}">{{ g.user['username'] }}</a>
               </li>
@@ -53,14 +57,14 @@
             {% endif %}
           </ul>
         </nav>
-        <a href="{{ url_for('blog.index') }}"><h3 class="text-muted">Search Prototype</h3></a>
+        </div>
       </div>
 
       <div class="jumbotron">
         {% if not g.user %}
           <h2>Welcome to Search Prototype!<br>
-            Please <a href="{{ url_for('auth.register') }}">register</a>
-            or <a href="{{ url_for('auth.login') }}">login</a>
+            Please <a href="{{ url_for('auth.register') }}" style="color:orange">register</a>
+            or <a href="{{ url_for('auth.login') }}" style="color:orange">login</a>
           </h2>
         {% endif %}
         {% block header %}{% endblock %}

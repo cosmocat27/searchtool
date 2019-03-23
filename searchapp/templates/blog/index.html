@@ -12,6 +12,25 @@
 {% endblock %}
 
 {% block content %}
+    {% if not g.user %}
+        <div class="text-center" style="height:200px;padding-top:20px">
+            <div class="col-md-4">
+                <h2>Simple</h2>
+                <h4>Upload files in familiar formats</h4>
+            </div>
+
+            <div class="col-md-4">
+                <h2>Fast</h2>
+                <h4>Obtain useful results instantly</h4>
+            </div>
+
+            <div class="col-md-4">
+                <h2>Powerful</h2>
+                <h4>Industry standard search analytics</h4>
+            </div>
+        </div>
+    {% endif %}
+    {% if g.user %}
     <h1>{% block title %}Latest Entries{% endblock %}</h1>
     <hr>
     <ul class=entries>
@@ -37,4 +56,5 @@
         <li><em>Unbelievable. No entries here so far</em>
     {% endfor %}
     </ul>
+    {% endif %}
 {% endblock %}
